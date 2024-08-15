@@ -1,0 +1,61 @@
+﻿@model AssetTrackingEFMVC.ViewModels.CreateEditViewModel
+@using AssetTrackingEFMVC.Extensions
+@using AssetTrackingEFMVC.Enums
+@using AssetTrackingEFMVC.Services
+
+
+<div class="row mt-5">
+    <h2>Create/Edit asset</h2>
+    <div class="col col-md-4">
+        <form asp-action="CreateEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="mt-3 form-group">
+                <label asp-for="Brand" class="control-label"></label>
+                <input asp-for="Brand" class="form-control" />
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+            <div class="mt-3 form-group">
+                <label asp-for="Model" class="control-label"></label>
+                <input asp-for="Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+            <div class="mt-3 form-group">
+                <label class="control-label">Price (Enter price in USD)</label>
+                <input asp-for="Price" value="@Model.Price.FormatPrice()" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="mt-3 form-group">
+                <label class="control-label">Local price (based on office)</label>
+                <input readonly asp-for="LocalPrice" class="form-control" />
+            </div>
+            <div class="mt-3 form-group">
+                <label asp-for="PurchaseDate" class="control-label"></label>
+                <input type="date" asp-for="PurchaseDate" value="@Model.PurchaseDate.FormatDate()" class="form-control" />
+                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+            </div>
+            <div class="mt-3 form-group">
+                <label asp-for="AssetType" class="control-label"></label>
+                <select asp-for="AssetType" asp-items="@(new SelectList(Html.GetEnumSelectList<AssetType>(),"Value","Text", Model.AssetType))" class="form-control">
+                    <option>Select type</option>
+                </select>
+                <span asp-validation-for="AssetType" class="text-danger"></span>
+            </div>
+            <div class="mt-3 form-group">
+                <label asp-for="OfficeId" class="control-label"></label>
+                <select asp-for="OfficeId" asp-items="@(new SelectList(ViewBag.Offices,"Id","Country", Model.OfficeId))" class="form-control">
+                    <option>Select office</option>
+                </select>
+                <span asp-validation-for="OfficeId" class="text-danger"></span>
+            </div>
+            <div class="mt-3 form-group">
+               <input type="submit" value="Spara" class="btn btn-primary" />
+            </div>
+            <div class="mt-3 form-group">
+                <a asp-action="Index">Back to list</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

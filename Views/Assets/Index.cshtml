@@ -1,0 +1,54 @@
+﻿@model IEnumerable<AssetViewModel>
+@using AssetTrackingEFMVC.Enums
+@using AssetTrackingEFMVC.ViewModels
+@using AssetTrackingEFMVC.Extensions
+
+
+
+<div class="row">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" asp-action="CreateEdit">Create new asset</a>
+    </nav>
+</div>
+<div class="row mt-lg-5">
+    <div class="row mt-lg-2">
+        <div class="col col-md-10 text-center">
+            <h2>Assets</h2>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <p><b>NOTE:</b><br />Red mark - purchasedate is three months/or less away from three years, or purchasedate have passed three years.<br />
+            Yellow mark - purchasedate is six months/or less away from three years.</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Local price</th>
+                    <th>PurchaseDate</th>
+                    <th>Office</th>
+                    <th>AssetType</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var asset in Model)
+                {
+                    <tr>
+                        <td><a asp-action="CreateEdit" asp-route-id="@asset.Id">@asset.Brand</a></td>
+                        <td>@asset.Model</td>
+                        <td>@asset.LocalPrice</td>
+                        <td>@asset.PurchaseDate.FormatDate()</td>
+                        <td>@asset.Office</td>
+                        <td>@(((AssetType)asset.AssetType).GetDisplayName())</td>
+                        <td><a asp-action="Delete" asp-route-id="@asset.Id">Delete</a></td>
+                        <td>@(asset.threeMonthsExpiration ? asset.threeMonthsExpiration.IsExpiredSoon("red"): asset.sixMonthsExpiration.IsExpiredSoon("yellow"))</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
